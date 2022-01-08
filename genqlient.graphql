@@ -72,3 +72,19 @@ mutation addNoteTagsAndLinks($tags: [note_tags_insert_input!]!, $links: [note_li
     }
   }
 }
+
+mutation addNoteTags($tags: [note_tags_insert_input!]!) {
+  insert_note_tags(objects: $tags) {
+    returning {
+      tag
+    }
+  }
+}
+
+mutation addNoteLinks($links: [note_links_insert_input!]!) {
+  insert_note_links(objects: $links) {
+    returning {
+      to
+    }
+  }
+}

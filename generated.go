@@ -445,6 +445,14 @@ type __addNoteInput struct {
 // GetNote returns __addNoteInput.Note, and is useful for accessing the field via an interface.
 func (v *__addNoteInput) GetNote() *Notes_insert_input { return v.Note }
 
+// __addNoteLinksInput is used internally by genqlient
+type __addNoteLinksInput struct {
+	Links []*Note_links_insert_input `json:"links,omitempty"`
+}
+
+// GetLinks returns __addNoteLinksInput.Links, and is useful for accessing the field via an interface.
+func (v *__addNoteLinksInput) GetLinks() []*Note_links_insert_input { return v.Links }
+
 // __addNoteTagsAndLinksInput is used internally by genqlient
 type __addNoteTagsAndLinksInput struct {
 	Tags  []*Note_tags_insert_input  `json:"tags,omitempty"`
@@ -456,6 +464,14 @@ func (v *__addNoteTagsAndLinksInput) GetTags() []*Note_tags_insert_input { retur
 
 // GetLinks returns __addNoteTagsAndLinksInput.Links, and is useful for accessing the field via an interface.
 func (v *__addNoteTagsAndLinksInput) GetLinks() []*Note_links_insert_input { return v.Links }
+
+// __addNoteTagsInput is used internally by genqlient
+type __addNoteTagsInput struct {
+	Tags []*Note_tags_insert_input `json:"tags,omitempty"`
+}
+
+// GetTags returns __addNoteTagsInput.Tags, and is useful for accessing the field via an interface.
+func (v *__addNoteTagsInput) GetTags() []*Note_tags_insert_input { return v.Tags }
 
 // __getNoteByIdInput is used internally by genqlient
 type __getNoteByIdInput struct {
@@ -498,6 +514,47 @@ type addNoteInsert_notes_oneNotes struct {
 
 // GetId returns addNoteInsert_notes_oneNotes.Id, and is useful for accessing the field via an interface.
 func (v *addNoteInsert_notes_oneNotes) GetId() int { return v.Id }
+
+// addNoteLinksInsert_note_linksNote_links_mutation_response includes the requested fields of the GraphQL type note_links_mutation_response.
+// The GraphQL type's documentation follows.
+//
+// response of any mutation on the table "note_links"
+type addNoteLinksInsert_note_linksNote_links_mutation_response struct {
+	// data from the rows affected by the mutation
+	Returning []*addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links `json:"returning"`
+}
+
+// GetReturning returns addNoteLinksInsert_note_linksNote_links_mutation_response.Returning, and is useful for accessing the field via an interface.
+func (v *addNoteLinksInsert_note_linksNote_links_mutation_response) GetReturning() []*addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links {
+	return v.Returning
+}
+
+// addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links includes the requested fields of the GraphQL type note_links.
+// The GraphQL type's documentation follows.
+//
+// links between notes
+//
+//
+// columns and relationships of "note_links"
+type addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links struct {
+	To int `json:"to"`
+}
+
+// GetTo returns addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links.To, and is useful for accessing the field via an interface.
+func (v *addNoteLinksInsert_note_linksNote_links_mutation_responseReturningNote_links) GetTo() int {
+	return v.To
+}
+
+// addNoteLinksResponse is returned by addNoteLinks on success.
+type addNoteLinksResponse struct {
+	// insert data into the table: "note_links"
+	Insert_note_links *addNoteLinksInsert_note_linksNote_links_mutation_response `json:"insert_note_links"`
+}
+
+// GetInsert_note_links returns addNoteLinksResponse.Insert_note_links, and is useful for accessing the field via an interface.
+func (v *addNoteLinksResponse) GetInsert_note_links() *addNoteLinksInsert_note_linksNote_links_mutation_response {
+	return v.Insert_note_links
+}
 
 // addNoteResponse is returned by addNote on success.
 type addNoteResponse struct {
@@ -586,6 +643,47 @@ func (v *addNoteTagsAndLinksResponse) GetInsert_note_tags() *addNoteTagsAndLinks
 // GetInsert_note_links returns addNoteTagsAndLinksResponse.Insert_note_links, and is useful for accessing the field via an interface.
 func (v *addNoteTagsAndLinksResponse) GetInsert_note_links() *addNoteTagsAndLinksInsert_note_linksNote_links_mutation_response {
 	return v.Insert_note_links
+}
+
+// addNoteTagsInsert_note_tagsNote_tags_mutation_response includes the requested fields of the GraphQL type note_tags_mutation_response.
+// The GraphQL type's documentation follows.
+//
+// response of any mutation on the table "note_tags"
+type addNoteTagsInsert_note_tagsNote_tags_mutation_response struct {
+	// data from the rows affected by the mutation
+	Returning []*addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags `json:"returning"`
+}
+
+// GetReturning returns addNoteTagsInsert_note_tagsNote_tags_mutation_response.Returning, and is useful for accessing the field via an interface.
+func (v *addNoteTagsInsert_note_tagsNote_tags_mutation_response) GetReturning() []*addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags {
+	return v.Returning
+}
+
+// addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags includes the requested fields of the GraphQL type note_tags.
+// The GraphQL type's documentation follows.
+//
+// Tags on notes
+//
+//
+// columns and relationships of "note_tags"
+type addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags struct {
+	Tag string `json:"tag"`
+}
+
+// GetTag returns addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags.Tag, and is useful for accessing the field via an interface.
+func (v *addNoteTagsInsert_note_tagsNote_tags_mutation_responseReturningNote_tags) GetTag() string {
+	return v.Tag
+}
+
+// addNoteTagsResponse is returned by addNoteTags on success.
+type addNoteTagsResponse struct {
+	// insert data into the table: "note_tags"
+	Insert_note_tags *addNoteTagsInsert_note_tagsNote_tags_mutation_response `json:"insert_note_tags"`
+}
+
+// GetInsert_note_tags returns addNoteTagsResponse.Insert_note_tags, and is useful for accessing the field via an interface.
+func (v *addNoteTagsResponse) GetInsert_note_tags() *addNoteTagsInsert_note_tagsNote_tags_mutation_response {
+	return v.Insert_note_tags
 }
 
 // getNoteByIdNotes includes the requested fields of the GraphQL type notes.
@@ -845,6 +943,64 @@ func addNote(
 mutation addNote ($note: notes_insert_input! = {}) {
 	insert_notes_one(object: $note) {
 		id
+	}
+}
+`,
+		&retval,
+		&__input,
+	)
+	return &retval, err
+}
+
+func addNoteLinks(
+	ctx context.Context,
+	client graphql.Client,
+	links []*Note_links_insert_input,
+) (*addNoteLinksResponse, error) {
+	__input := __addNoteLinksInput{
+		Links: links,
+	}
+	var err error
+
+	var retval addNoteLinksResponse
+	err = client.MakeRequest(
+		ctx,
+		"addNoteLinks",
+		`
+mutation addNoteLinks ($links: [note_links_insert_input!]!) {
+	insert_note_links(objects: $links) {
+		returning {
+			to
+		}
+	}
+}
+`,
+		&retval,
+		&__input,
+	)
+	return &retval, err
+}
+
+func addNoteTags(
+	ctx context.Context,
+	client graphql.Client,
+	tags []*Note_tags_insert_input,
+) (*addNoteTagsResponse, error) {
+	__input := __addNoteTagsInput{
+		Tags: tags,
+	}
+	var err error
+
+	var retval addNoteTagsResponse
+	err = client.MakeRequest(
+		ctx,
+		"addNoteTags",
+		`
+mutation addNoteTags ($tags: [note_tags_insert_input!]!) {
+	insert_note_tags(objects: $tags) {
+		returning {
+			tag
+		}
 	}
 }
 `,
