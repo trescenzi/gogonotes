@@ -201,15 +201,28 @@ func main() {
 				fmt.Println("Success! Updated Note " + fmt.Sprint(id))
 				return
 			} else if len(tagsInput) == 0 && len(linksInput) != 0 {
-				fmt.Printf("Adding Links %p\n", linksInput)
+				for _, link := range linksInput {
+					fmt.Printf("Adding Link %d ", link.To)
+				}
+				fmt.Println()
 				_, err = addNoteLinks(context.Background(), graphqlClient, linksInput)
 				handleErr(err)
 			} else if len(tagsInput) != 0 && len(linksInput) == 0 {
-				fmt.Printf("Adding Tags %p\n", tagsInput)
+				for _, tag := range tagsInput {
+					fmt.Printf("Adding Tag %s ", tag.Tag)
+				}
+				fmt.Println()
 				_, err = addNoteTags(context.Background(), graphqlClient, tagsInput)
 				handleErr(err)
 			} else {
-				fmt.Printf("Adding Links and Tags %p%p\n", tagsInput, linksInput)
+				for _, link := range linksInput {
+					fmt.Printf("Adding Link %d ", link.To)
+				}
+				fmt.Println()
+				for _, tag := range tagsInput {
+					fmt.Printf("Adding Tag %s ", tag.Tag)
+				}
+				fmt.Println()
 				_, err = addNoteTagsAndLinks(context.Background(), graphqlClient, tagsInput, linksInput)
 				handleErr(err)
 			}
