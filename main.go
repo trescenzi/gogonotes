@@ -82,7 +82,6 @@ func main() {
 			var filePath = noteRoot + fmt.Sprint(note.Id) + ".ggn"
 			f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0666)
 			handleErr(err)
-			defer f.Close()
 
 			fStat, err := f.Stat()
 			handleErr(err)
@@ -93,6 +92,7 @@ func main() {
 			handleErr(err)
 
 			f.WriteString(note.Note)
+			f.Close()
 		}
 	case "save":
 		id, err := strconv.Atoi(os.Args[2])
