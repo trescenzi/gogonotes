@@ -1,0 +1,74 @@
+query GetAllNotes {
+  notes {
+    id
+    note
+    creator
+    created_at
+    note_tags {
+      tag
+    }
+    note_links {
+      to
+    }
+  }
+}
+
+query getNoteById($id:Int!) {
+  notes(where: {id: {_eq: $id}}) {
+    id
+    note
+    creator
+    created_at
+    note_tags {
+      tag
+    }
+    note_links {
+      to
+    }
+  }
+}
+
+query searchNotesByTag($args: search_by_tag_args!) {
+  search_by_tag(args: $args) {
+		note
+    id
+    creator
+    created_at
+    note_tags {
+      tag
+    }
+    note_links {
+      to
+    }
+  }
+}
+
+mutation updateNote($id:Int!, $note:String!) {
+  update_notes(where: {id: {_eq: $id}}, _set: {note: $note}) {
+		returning {
+      note
+      id
+      creator
+      created_at
+    }
+  }
+}
+
+mutation addNote($note: notes_insert_input! = {}) {
+  insert_notes_one(object: $note) {
+    id
+  }
+}
+
+mutation addNoteTagsAndLinks($tags: [note_tags_insert_input!]!, $links: [note_links_insert_input!]!) {
+  insert_note_tags(objects: $tags) {
+    returning {
+      tag
+    }
+  }
+  insert_note_links(objects: $links) {
+    returning {
+      to
+    }
+  }
+}

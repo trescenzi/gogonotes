@@ -1,0 +1,2685 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+columns and relationships of "initiative"
+"""
+type initiative {
+  id: Int!
+  name: String!
+  value: Int!
+}
+
+"""
+aggregated selection of "initiative"
+"""
+type initiative_aggregate {
+  aggregate: initiative_aggregate_fields
+  nodes: [initiative!]!
+}
+
+"""
+aggregate fields of "initiative"
+"""
+type initiative_aggregate_fields {
+  avg: initiative_avg_fields
+  count(columns: [initiative_select_column!], distinct: Boolean): Int!
+  max: initiative_max_fields
+  min: initiative_min_fields
+  stddev: initiative_stddev_fields
+  stddev_pop: initiative_stddev_pop_fields
+  stddev_samp: initiative_stddev_samp_fields
+  sum: initiative_sum_fields
+  var_pop: initiative_var_pop_fields
+  var_samp: initiative_var_samp_fields
+  variance: initiative_variance_fields
+}
+
+"""aggregate avg on columns"""
+type initiative_avg_fields {
+  id: Float
+  value: Float
+}
+
+"""
+Boolean expression to filter rows from the table "initiative". All fields are combined with a logical 'AND'.
+"""
+input initiative_bool_exp {
+  _and: [initiative_bool_exp!]
+  _not: initiative_bool_exp
+  _or: [initiative_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  value: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "initiative"
+"""
+enum initiative_constraint {
+  """unique or primary key constraint"""
+  initiative_pkey
+}
+
+"""
+columns and relationships of "initiative_group"
+"""
+type initiative_group {
+  code: String!
+  created_at: timestamptz!
+  id: Int!
+}
+
+"""
+aggregated selection of "initiative_group"
+"""
+type initiative_group_aggregate {
+  aggregate: initiative_group_aggregate_fields
+  nodes: [initiative_group!]!
+}
+
+"""
+aggregate fields of "initiative_group"
+"""
+type initiative_group_aggregate_fields {
+  avg: initiative_group_avg_fields
+  count(columns: [initiative_group_select_column!], distinct: Boolean): Int!
+  max: initiative_group_max_fields
+  min: initiative_group_min_fields
+  stddev: initiative_group_stddev_fields
+  stddev_pop: initiative_group_stddev_pop_fields
+  stddev_samp: initiative_group_stddev_samp_fields
+  sum: initiative_group_sum_fields
+  var_pop: initiative_group_var_pop_fields
+  var_samp: initiative_group_var_samp_fields
+  variance: initiative_group_variance_fields
+}
+
+"""aggregate avg on columns"""
+type initiative_group_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "initiative_group". All fields are combined with a logical 'AND'.
+"""
+input initiative_group_bool_exp {
+  _and: [initiative_group_bool_exp!]
+  _not: initiative_group_bool_exp
+  _or: [initiative_group_bool_exp!]
+  code: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "initiative_group"
+"""
+enum initiative_group_constraint {
+  """unique or primary key constraint"""
+  initiative_group_code_key
+
+  """unique or primary key constraint"""
+  initiative_group_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "initiative_group"
+"""
+input initiative_group_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "initiative_group"
+"""
+input initiative_group_insert_input {
+  code: String
+  created_at: timestamptz
+  id: Int
+}
+
+"""aggregate max on columns"""
+type initiative_group_max_fields {
+  code: String
+  created_at: timestamptz
+  id: Int
+}
+
+"""aggregate min on columns"""
+type initiative_group_min_fields {
+  code: String
+  created_at: timestamptz
+  id: Int
+}
+
+"""
+response of any mutation on the table "initiative_group"
+"""
+type initiative_group_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [initiative_group!]!
+}
+
+"""
+on conflict condition type for table "initiative_group"
+"""
+input initiative_group_on_conflict {
+  constraint: initiative_group_constraint!
+  update_columns: [initiative_group_update_column!]! = []
+  where: initiative_group_bool_exp
+}
+
+"""Ordering options when selecting data from "initiative_group"."""
+input initiative_group_order_by {
+  code: order_by
+  created_at: order_by
+  id: order_by
+}
+
+"""primary key columns input for table: initiative_group"""
+input initiative_group_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "initiative_group"
+"""
+enum initiative_group_select_column {
+  """column name"""
+  code
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+}
+
+"""
+input type for updating data in table "initiative_group"
+"""
+input initiative_group_set_input {
+  code: String
+  created_at: timestamptz
+  id: Int
+}
+
+"""aggregate stddev on columns"""
+type initiative_group_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type initiative_group_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type initiative_group_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type initiative_group_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "initiative_group"
+"""
+enum initiative_group_update_column {
+  """column name"""
+  code
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+}
+
+"""aggregate var_pop on columns"""
+type initiative_group_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type initiative_group_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type initiative_group_variance_fields {
+  id: Float
+}
+
+"""
+input type for incrementing numeric columns in table "initiative"
+"""
+input initiative_inc_input {
+  id: Int
+  value: Int
+}
+
+"""
+input type for inserting data into table "initiative"
+"""
+input initiative_insert_input {
+  id: Int
+  name: String
+  value: Int
+}
+
+"""aggregate max on columns"""
+type initiative_max_fields {
+  id: Int
+  name: String
+  value: Int
+}
+
+"""aggregate min on columns"""
+type initiative_min_fields {
+  id: Int
+  name: String
+  value: Int
+}
+
+"""
+response of any mutation on the table "initiative"
+"""
+type initiative_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [initiative!]!
+}
+
+"""
+on conflict condition type for table "initiative"
+"""
+input initiative_on_conflict {
+  constraint: initiative_constraint!
+  update_columns: [initiative_update_column!]! = []
+  where: initiative_bool_exp
+}
+
+"""Ordering options when selecting data from "initiative"."""
+input initiative_order_by {
+  id: order_by
+  name: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: initiative"""
+input initiative_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "initiative"
+"""
+enum initiative_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "initiative"
+"""
+input initiative_set_input {
+  id: Int
+  name: String
+  value: Int
+}
+
+"""aggregate stddev on columns"""
+type initiative_stddev_fields {
+  id: Float
+  value: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type initiative_stddev_pop_fields {
+  id: Float
+  value: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type initiative_stddev_samp_fields {
+  id: Float
+  value: Float
+}
+
+"""aggregate sum on columns"""
+type initiative_sum_fields {
+  id: Int
+  value: Int
+}
+
+"""
+update columns of table "initiative"
+"""
+enum initiative_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  value
+}
+
+"""aggregate var_pop on columns"""
+type initiative_var_pop_fields {
+  id: Float
+  value: Float
+}
+
+"""aggregate var_samp on columns"""
+type initiative_var_samp_fields {
+  id: Float
+  value: Float
+}
+
+"""aggregate variance on columns"""
+type initiative_variance_fields {
+  id: Float
+  value: Float
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "initiative"
+  """
+  delete_initiative(
+    """filter the rows which have to be deleted"""
+    where: initiative_bool_exp!
+  ): initiative_mutation_response
+
+  """
+  delete single row from the table: "initiative"
+  """
+  delete_initiative_by_pk(id: Int!): initiative
+
+  """
+  delete data from the table: "initiative_group"
+  """
+  delete_initiative_group(
+    """filter the rows which have to be deleted"""
+    where: initiative_group_bool_exp!
+  ): initiative_group_mutation_response
+
+  """
+  delete single row from the table: "initiative_group"
+  """
+  delete_initiative_group_by_pk(id: Int!): initiative_group
+
+  """
+  delete data from the table: "note_links"
+  """
+  delete_note_links(
+    """filter the rows which have to be deleted"""
+    where: note_links_bool_exp!
+  ): note_links_mutation_response
+
+  """
+  delete single row from the table: "note_links"
+  """
+  delete_note_links_by_pk(from: Int!, to: Int!): note_links
+
+  """
+  delete data from the table: "note_tags"
+  """
+  delete_note_tags(
+    """filter the rows which have to be deleted"""
+    where: note_tags_bool_exp!
+  ): note_tags_mutation_response
+
+  """
+  delete single row from the table: "note_tags"
+  """
+  delete_note_tags_by_pk(id: Int!): note_tags
+
+  """
+  delete data from the table: "notes"
+  """
+  delete_notes(
+    """filter the rows which have to be deleted"""
+    where: notes_bool_exp!
+  ): notes_mutation_response
+
+  """
+  delete single row from the table: "notes"
+  """
+  delete_notes_by_pk(id: Int!): notes
+
+  """
+  delete data from the table: "test"
+  """
+  delete_test(
+    """filter the rows which have to be deleted"""
+    where: test_bool_exp!
+  ): test_mutation_response
+
+  """
+  delete single row from the table: "test"
+  """
+  delete_test_by_pk(id: Int!): test
+
+  """
+  insert data into the table: "initiative"
+  """
+  insert_initiative(
+    """the rows to be inserted"""
+    objects: [initiative_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: initiative_on_conflict
+  ): initiative_mutation_response
+
+  """
+  insert data into the table: "initiative_group"
+  """
+  insert_initiative_group(
+    """the rows to be inserted"""
+    objects: [initiative_group_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: initiative_group_on_conflict
+  ): initiative_group_mutation_response
+
+  """
+  insert a single row into the table: "initiative_group"
+  """
+  insert_initiative_group_one(
+    """the row to be inserted"""
+    object: initiative_group_insert_input!
+
+    """on conflict condition"""
+    on_conflict: initiative_group_on_conflict
+  ): initiative_group
+
+  """
+  insert a single row into the table: "initiative"
+  """
+  insert_initiative_one(
+    """the row to be inserted"""
+    object: initiative_insert_input!
+
+    """on conflict condition"""
+    on_conflict: initiative_on_conflict
+  ): initiative
+
+  """
+  insert data into the table: "note_links"
+  """
+  insert_note_links(
+    """the rows to be inserted"""
+    objects: [note_links_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: note_links_on_conflict
+  ): note_links_mutation_response
+
+  """
+  insert a single row into the table: "note_links"
+  """
+  insert_note_links_one(
+    """the row to be inserted"""
+    object: note_links_insert_input!
+
+    """on conflict condition"""
+    on_conflict: note_links_on_conflict
+  ): note_links
+
+  """
+  insert data into the table: "note_tags"
+  """
+  insert_note_tags(
+    """the rows to be inserted"""
+    objects: [note_tags_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: note_tags_on_conflict
+  ): note_tags_mutation_response
+
+  """
+  insert a single row into the table: "note_tags"
+  """
+  insert_note_tags_one(
+    """the row to be inserted"""
+    object: note_tags_insert_input!
+
+    """on conflict condition"""
+    on_conflict: note_tags_on_conflict
+  ): note_tags
+
+  """
+  insert data into the table: "notes"
+  """
+  insert_notes(
+    """the rows to be inserted"""
+    objects: [notes_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: notes_on_conflict
+  ): notes_mutation_response
+
+  """
+  insert a single row into the table: "notes"
+  """
+  insert_notes_one(
+    """the row to be inserted"""
+    object: notes_insert_input!
+
+    """on conflict condition"""
+    on_conflict: notes_on_conflict
+  ): notes
+
+  """
+  insert data into the table: "test"
+  """
+  insert_test(
+    """the rows to be inserted"""
+    objects: [test_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: test_on_conflict
+  ): test_mutation_response
+
+  """
+  insert a single row into the table: "test"
+  """
+  insert_test_one(
+    """the row to be inserted"""
+    object: test_insert_input!
+
+    """on conflict condition"""
+    on_conflict: test_on_conflict
+  ): test
+
+  """
+  update data of the table: "initiative"
+  """
+  update_initiative(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: initiative_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: initiative_set_input
+
+    """filter the rows which have to be updated"""
+    where: initiative_bool_exp!
+  ): initiative_mutation_response
+
+  """
+  update single row of the table: "initiative"
+  """
+  update_initiative_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: initiative_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: initiative_set_input
+    pk_columns: initiative_pk_columns_input!
+  ): initiative
+
+  """
+  update data of the table: "initiative_group"
+  """
+  update_initiative_group(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: initiative_group_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: initiative_group_set_input
+
+    """filter the rows which have to be updated"""
+    where: initiative_group_bool_exp!
+  ): initiative_group_mutation_response
+
+  """
+  update single row of the table: "initiative_group"
+  """
+  update_initiative_group_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: initiative_group_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: initiative_group_set_input
+    pk_columns: initiative_group_pk_columns_input!
+  ): initiative_group
+
+  """
+  update data of the table: "note_links"
+  """
+  update_note_links(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: note_links_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: note_links_set_input
+
+    """filter the rows which have to be updated"""
+    where: note_links_bool_exp!
+  ): note_links_mutation_response
+
+  """
+  update single row of the table: "note_links"
+  """
+  update_note_links_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: note_links_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: note_links_set_input
+    pk_columns: note_links_pk_columns_input!
+  ): note_links
+
+  """
+  update data of the table: "note_tags"
+  """
+  update_note_tags(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: note_tags_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: note_tags_set_input
+
+    """filter the rows which have to be updated"""
+    where: note_tags_bool_exp!
+  ): note_tags_mutation_response
+
+  """
+  update single row of the table: "note_tags"
+  """
+  update_note_tags_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: note_tags_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: note_tags_set_input
+    pk_columns: note_tags_pk_columns_input!
+  ): note_tags
+
+  """
+  update data of the table: "notes"
+  """
+  update_notes(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: notes_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: notes_set_input
+
+    """filter the rows which have to be updated"""
+    where: notes_bool_exp!
+  ): notes_mutation_response
+
+  """
+  update single row of the table: "notes"
+  """
+  update_notes_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: notes_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: notes_set_input
+    pk_columns: notes_pk_columns_input!
+  ): notes
+
+  """
+  update data of the table: "test"
+  """
+  update_test(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: test_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: test_set_input
+
+    """filter the rows which have to be updated"""
+    where: test_bool_exp!
+  ): test_mutation_response
+
+  """
+  update single row of the table: "test"
+  """
+  update_test_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: test_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: test_set_input
+    pk_columns: test_pk_columns_input!
+  ): test
+}
+
+"""
+links between notes
+
+
+columns and relationships of "note_links"
+
+"""
+type note_links {
+  from: Int!
+  to: Int!
+}
+
+"""
+aggregated selection of "note_links"
+"""
+type note_links_aggregate {
+  aggregate: note_links_aggregate_fields
+  nodes: [note_links!]!
+}
+
+"""
+aggregate fields of "note_links"
+"""
+type note_links_aggregate_fields {
+  avg: note_links_avg_fields
+  count(columns: [note_links_select_column!], distinct: Boolean): Int!
+  max: note_links_max_fields
+  min: note_links_min_fields
+  stddev: note_links_stddev_fields
+  stddev_pop: note_links_stddev_pop_fields
+  stddev_samp: note_links_stddev_samp_fields
+  sum: note_links_sum_fields
+  var_pop: note_links_var_pop_fields
+  var_samp: note_links_var_samp_fields
+  variance: note_links_variance_fields
+}
+
+"""
+order by aggregate values of table "note_links"
+"""
+input note_links_aggregate_order_by {
+  avg: note_links_avg_order_by
+  count: order_by
+  max: note_links_max_order_by
+  min: note_links_min_order_by
+  stddev: note_links_stddev_order_by
+  stddev_pop: note_links_stddev_pop_order_by
+  stddev_samp: note_links_stddev_samp_order_by
+  sum: note_links_sum_order_by
+  var_pop: note_links_var_pop_order_by
+  var_samp: note_links_var_samp_order_by
+  variance: note_links_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "note_links"
+"""
+input note_links_arr_rel_insert_input {
+  data: [note_links_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: note_links_on_conflict
+}
+
+"""aggregate avg on columns"""
+type note_links_avg_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by avg() on columns of table "note_links"
+"""
+input note_links_avg_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "note_links". All fields are combined with a logical 'AND'.
+"""
+input note_links_bool_exp {
+  _and: [note_links_bool_exp!]
+  _not: note_links_bool_exp
+  _or: [note_links_bool_exp!]
+  from: Int_comparison_exp
+  to: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "note_links"
+"""
+enum note_links_constraint {
+  """unique or primary key constraint"""
+  note_links_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "note_links"
+"""
+input note_links_inc_input {
+  from: Int
+  to: Int
+}
+
+"""
+input type for inserting data into table "note_links"
+"""
+input note_links_insert_input {
+  from: Int
+  to: Int
+}
+
+"""aggregate max on columns"""
+type note_links_max_fields {
+  from: Int
+  to: Int
+}
+
+"""
+order by max() on columns of table "note_links"
+"""
+input note_links_max_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate min on columns"""
+type note_links_min_fields {
+  from: Int
+  to: Int
+}
+
+"""
+order by min() on columns of table "note_links"
+"""
+input note_links_min_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""
+response of any mutation on the table "note_links"
+"""
+type note_links_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [note_links!]!
+}
+
+"""
+on conflict condition type for table "note_links"
+"""
+input note_links_on_conflict {
+  constraint: note_links_constraint!
+  update_columns: [note_links_update_column!]! = []
+  where: note_links_bool_exp
+}
+
+"""Ordering options when selecting data from "note_links"."""
+input note_links_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""primary key columns input for table: note_links"""
+input note_links_pk_columns_input {
+  from: Int!
+  to: Int!
+}
+
+"""
+select columns of table "note_links"
+"""
+enum note_links_select_column {
+  """column name"""
+  from
+
+  """column name"""
+  to
+}
+
+"""
+input type for updating data in table "note_links"
+"""
+input note_links_set_input {
+  from: Int
+  to: Int
+}
+
+"""aggregate stddev on columns"""
+type note_links_stddev_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by stddev() on columns of table "note_links"
+"""
+input note_links_stddev_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type note_links_stddev_pop_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by stddev_pop() on columns of table "note_links"
+"""
+input note_links_stddev_pop_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type note_links_stddev_samp_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by stddev_samp() on columns of table "note_links"
+"""
+input note_links_stddev_samp_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate sum on columns"""
+type note_links_sum_fields {
+  from: Int
+  to: Int
+}
+
+"""
+order by sum() on columns of table "note_links"
+"""
+input note_links_sum_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""
+update columns of table "note_links"
+"""
+enum note_links_update_column {
+  """column name"""
+  from
+
+  """column name"""
+  to
+}
+
+"""aggregate var_pop on columns"""
+type note_links_var_pop_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by var_pop() on columns of table "note_links"
+"""
+input note_links_var_pop_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate var_samp on columns"""
+type note_links_var_samp_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by var_samp() on columns of table "note_links"
+"""
+input note_links_var_samp_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""aggregate variance on columns"""
+type note_links_variance_fields {
+  from: Float
+  to: Float
+}
+
+"""
+order by variance() on columns of table "note_links"
+"""
+input note_links_variance_order_by {
+  from: order_by
+  to: order_by
+}
+
+"""
+Tags on notes
+
+
+columns and relationships of "note_tags"
+
+"""
+type note_tags {
+  id: Int!
+  note_id: Int!
+  tag: String!
+}
+
+"""
+aggregated selection of "note_tags"
+"""
+type note_tags_aggregate {
+  aggregate: note_tags_aggregate_fields
+  nodes: [note_tags!]!
+}
+
+"""
+aggregate fields of "note_tags"
+"""
+type note_tags_aggregate_fields {
+  avg: note_tags_avg_fields
+  count(columns: [note_tags_select_column!], distinct: Boolean): Int!
+  max: note_tags_max_fields
+  min: note_tags_min_fields
+  stddev: note_tags_stddev_fields
+  stddev_pop: note_tags_stddev_pop_fields
+  stddev_samp: note_tags_stddev_samp_fields
+  sum: note_tags_sum_fields
+  var_pop: note_tags_var_pop_fields
+  var_samp: note_tags_var_samp_fields
+  variance: note_tags_variance_fields
+}
+
+"""
+order by aggregate values of table "note_tags"
+"""
+input note_tags_aggregate_order_by {
+  avg: note_tags_avg_order_by
+  count: order_by
+  max: note_tags_max_order_by
+  min: note_tags_min_order_by
+  stddev: note_tags_stddev_order_by
+  stddev_pop: note_tags_stddev_pop_order_by
+  stddev_samp: note_tags_stddev_samp_order_by
+  sum: note_tags_sum_order_by
+  var_pop: note_tags_var_pop_order_by
+  var_samp: note_tags_var_samp_order_by
+  variance: note_tags_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "note_tags"
+"""
+input note_tags_arr_rel_insert_input {
+  data: [note_tags_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: note_tags_on_conflict
+}
+
+"""aggregate avg on columns"""
+type note_tags_avg_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by avg() on columns of table "note_tags"
+"""
+input note_tags_avg_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "note_tags". All fields are combined with a logical 'AND'.
+"""
+input note_tags_bool_exp {
+  _and: [note_tags_bool_exp!]
+  _not: note_tags_bool_exp
+  _or: [note_tags_bool_exp!]
+  id: Int_comparison_exp
+  note_id: Int_comparison_exp
+  tag: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "note_tags"
+"""
+enum note_tags_constraint {
+  """unique or primary key constraint"""
+  note_tags_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "note_tags"
+"""
+input note_tags_inc_input {
+  id: Int
+  note_id: Int
+}
+
+"""
+input type for inserting data into table "note_tags"
+"""
+input note_tags_insert_input {
+  id: Int
+  note_id: Int
+  tag: String
+}
+
+"""aggregate max on columns"""
+type note_tags_max_fields {
+  id: Int
+  note_id: Int
+  tag: String
+}
+
+"""
+order by max() on columns of table "note_tags"
+"""
+input note_tags_max_order_by {
+  id: order_by
+  note_id: order_by
+  tag: order_by
+}
+
+"""aggregate min on columns"""
+type note_tags_min_fields {
+  id: Int
+  note_id: Int
+  tag: String
+}
+
+"""
+order by min() on columns of table "note_tags"
+"""
+input note_tags_min_order_by {
+  id: order_by
+  note_id: order_by
+  tag: order_by
+}
+
+"""
+response of any mutation on the table "note_tags"
+"""
+type note_tags_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [note_tags!]!
+}
+
+"""
+on conflict condition type for table "note_tags"
+"""
+input note_tags_on_conflict {
+  constraint: note_tags_constraint!
+  update_columns: [note_tags_update_column!]! = []
+  where: note_tags_bool_exp
+}
+
+"""Ordering options when selecting data from "note_tags"."""
+input note_tags_order_by {
+  id: order_by
+  note_id: order_by
+  tag: order_by
+}
+
+"""primary key columns input for table: note_tags"""
+input note_tags_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "note_tags"
+"""
+enum note_tags_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  note_id
+
+  """column name"""
+  tag
+}
+
+"""
+input type for updating data in table "note_tags"
+"""
+input note_tags_set_input {
+  id: Int
+  note_id: Int
+  tag: String
+}
+
+"""aggregate stddev on columns"""
+type note_tags_stddev_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by stddev() on columns of table "note_tags"
+"""
+input note_tags_stddev_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type note_tags_stddev_pop_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "note_tags"
+"""
+input note_tags_stddev_pop_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type note_tags_stddev_samp_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "note_tags"
+"""
+input note_tags_stddev_samp_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""aggregate sum on columns"""
+type note_tags_sum_fields {
+  id: Int
+  note_id: Int
+}
+
+"""
+order by sum() on columns of table "note_tags"
+"""
+input note_tags_sum_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""
+update columns of table "note_tags"
+"""
+enum note_tags_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  note_id
+
+  """column name"""
+  tag
+}
+
+"""aggregate var_pop on columns"""
+type note_tags_var_pop_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by var_pop() on columns of table "note_tags"
+"""
+input note_tags_var_pop_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type note_tags_var_samp_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by var_samp() on columns of table "note_tags"
+"""
+input note_tags_var_samp_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""aggregate variance on columns"""
+type note_tags_variance_fields {
+  id: Float
+  note_id: Float
+}
+
+"""
+order by variance() on columns of table "note_tags"
+"""
+input note_tags_variance_order_by {
+  id: order_by
+  note_id: order_by
+}
+
+"""
+A list of notes 
+
+
+columns and relationships of "notes"
+
+"""
+type notes {
+  created_at: timestamptz!
+  creator: String
+  id: Int!
+  note: String!
+
+  """An array relationship"""
+  noteLinksByTo(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): [note_links!]!
+
+  """An aggregate relationship"""
+  noteLinksByTo_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): note_links_aggregate!
+
+  """
+  fetch data from the table: "note_links"
+  """
+  note_links(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): [note_links!]!
+
+  """
+  fetch aggregated fields from the table: "note_links"
+  """
+  note_links_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): note_links_aggregate!
+
+  """
+  fetch data from the table: "note_tags"
+  """
+  note_tags(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): [note_tags!]!
+
+  """
+  fetch aggregated fields from the table: "note_tags"
+  """
+  note_tags_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): note_tags_aggregate!
+}
+
+"""
+aggregated selection of "notes"
+"""
+type notes_aggregate {
+  aggregate: notes_aggregate_fields
+  nodes: [notes!]!
+}
+
+"""
+aggregate fields of "notes"
+"""
+type notes_aggregate_fields {
+  avg: notes_avg_fields
+  count(columns: [notes_select_column!], distinct: Boolean): Int!
+  max: notes_max_fields
+  min: notes_min_fields
+  stddev: notes_stddev_fields
+  stddev_pop: notes_stddev_pop_fields
+  stddev_samp: notes_stddev_samp_fields
+  sum: notes_sum_fields
+  var_pop: notes_var_pop_fields
+  var_samp: notes_var_samp_fields
+  variance: notes_variance_fields
+}
+
+"""aggregate avg on columns"""
+type notes_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "notes". All fields are combined with a logical 'AND'.
+"""
+input notes_bool_exp {
+  _and: [notes_bool_exp!]
+  _not: notes_bool_exp
+  _or: [notes_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  creator: String_comparison_exp
+  id: Int_comparison_exp
+  note: String_comparison_exp
+  noteLinksByTo: note_links_bool_exp
+  note_links: note_links_bool_exp
+  note_tags: note_tags_bool_exp
+}
+
+"""
+unique or primary key constraints on table "notes"
+"""
+enum notes_constraint {
+  """unique or primary key constraint"""
+  notes_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "notes"
+"""
+input notes_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "notes"
+"""
+input notes_insert_input {
+  created_at: timestamptz
+  creator: String
+  id: Int
+  note: String
+  noteLinksByTo: note_links_arr_rel_insert_input
+  note_links: note_links_arr_rel_insert_input
+  note_tags: note_tags_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type notes_max_fields {
+  created_at: timestamptz
+  creator: String
+  id: Int
+  note: String
+}
+
+"""aggregate min on columns"""
+type notes_min_fields {
+  created_at: timestamptz
+  creator: String
+  id: Int
+  note: String
+}
+
+"""
+response of any mutation on the table "notes"
+"""
+type notes_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [notes!]!
+}
+
+"""
+on conflict condition type for table "notes"
+"""
+input notes_on_conflict {
+  constraint: notes_constraint!
+  update_columns: [notes_update_column!]! = []
+  where: notes_bool_exp
+}
+
+"""Ordering options when selecting data from "notes"."""
+input notes_order_by {
+  created_at: order_by
+  creator: order_by
+  id: order_by
+  note: order_by
+  noteLinksByTo_aggregate: note_links_aggregate_order_by
+  note_links_aggregate: note_links_aggregate_order_by
+  note_tags_aggregate: note_tags_aggregate_order_by
+}
+
+"""primary key columns input for table: notes"""
+input notes_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "notes"
+"""
+enum notes_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  creator
+
+  """column name"""
+  id
+
+  """column name"""
+  note
+}
+
+"""
+input type for updating data in table "notes"
+"""
+input notes_set_input {
+  created_at: timestamptz
+  creator: String
+  id: Int
+  note: String
+}
+
+"""aggregate stddev on columns"""
+type notes_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type notes_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type notes_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type notes_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "notes"
+"""
+enum notes_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  creator
+
+  """column name"""
+  id
+
+  """column name"""
+  note
+}
+
+"""aggregate var_pop on columns"""
+type notes_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type notes_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type notes_variance_fields {
+  id: Float
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "initiative"
+  """
+  initiative(
+    """distinct select on columns"""
+    distinct_on: [initiative_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_bool_exp
+  ): [initiative!]!
+
+  """
+  fetch aggregated fields from the table: "initiative"
+  """
+  initiative_aggregate(
+    """distinct select on columns"""
+    distinct_on: [initiative_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_bool_exp
+  ): initiative_aggregate!
+
+  """fetch data from the table: "initiative" using primary key columns"""
+  initiative_by_pk(id: Int!): initiative
+
+  """
+  fetch data from the table: "initiative_group"
+  """
+  initiative_group(
+    """distinct select on columns"""
+    distinct_on: [initiative_group_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_group_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_group_bool_exp
+  ): [initiative_group!]!
+
+  """
+  fetch aggregated fields from the table: "initiative_group"
+  """
+  initiative_group_aggregate(
+    """distinct select on columns"""
+    distinct_on: [initiative_group_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_group_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_group_bool_exp
+  ): initiative_group_aggregate!
+
+  """
+  fetch data from the table: "initiative_group" using primary key columns
+  """
+  initiative_group_by_pk(id: Int!): initiative_group
+
+  """
+  fetch data from the table: "note_links"
+  """
+  note_links(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): [note_links!]!
+
+  """
+  fetch aggregated fields from the table: "note_links"
+  """
+  note_links_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): note_links_aggregate!
+
+  """fetch data from the table: "note_links" using primary key columns"""
+  note_links_by_pk(from: Int!, to: Int!): note_links
+
+  """
+  fetch data from the table: "note_tags"
+  """
+  note_tags(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): [note_tags!]!
+
+  """
+  fetch aggregated fields from the table: "note_tags"
+  """
+  note_tags_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): note_tags_aggregate!
+
+  """fetch data from the table: "note_tags" using primary key columns"""
+  note_tags_by_pk(id: Int!): note_tags
+
+  """
+  fetch data from the table: "notes"
+  """
+  notes(
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): [notes!]!
+
+  """
+  fetch aggregated fields from the table: "notes"
+  """
+  notes_aggregate(
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): notes_aggregate!
+
+  """fetch data from the table: "notes" using primary key columns"""
+  notes_by_pk(id: Int!): notes
+
+  """
+  execute function "search_by_tag" which returns "notes"
+  """
+  search_by_tag(
+    """
+    input parameters for function "search_by_tag"
+    """
+    args: search_by_tag_args!
+
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): [notes!]!
+
+  """
+  execute function "search_by_tag" and query aggregates on result of table type "notes"
+  """
+  search_by_tag_aggregate(
+    """
+    input parameters for function "search_by_tag"
+    """
+    args: search_by_tag_args!
+
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): notes_aggregate!
+
+  """
+  fetch data from the table: "test"
+  """
+  test(
+    """distinct select on columns"""
+    distinct_on: [test_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [test_order_by!]
+
+    """filter the rows returned"""
+    where: test_bool_exp
+  ): [test!]!
+
+  """
+  fetch aggregated fields from the table: "test"
+  """
+  test_aggregate(
+    """distinct select on columns"""
+    distinct_on: [test_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [test_order_by!]
+
+    """filter the rows returned"""
+    where: test_bool_exp
+  ): test_aggregate!
+
+  """fetch data from the table: "test" using primary key columns"""
+  test_by_pk(id: Int!): test
+}
+
+input search_by_tag_args {
+  search_tag: String
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "initiative"
+  """
+  initiative(
+    """distinct select on columns"""
+    distinct_on: [initiative_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_bool_exp
+  ): [initiative!]!
+
+  """
+  fetch aggregated fields from the table: "initiative"
+  """
+  initiative_aggregate(
+    """distinct select on columns"""
+    distinct_on: [initiative_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_bool_exp
+  ): initiative_aggregate!
+
+  """fetch data from the table: "initiative" using primary key columns"""
+  initiative_by_pk(id: Int!): initiative
+
+  """
+  fetch data from the table: "initiative_group"
+  """
+  initiative_group(
+    """distinct select on columns"""
+    distinct_on: [initiative_group_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_group_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_group_bool_exp
+  ): [initiative_group!]!
+
+  """
+  fetch aggregated fields from the table: "initiative_group"
+  """
+  initiative_group_aggregate(
+    """distinct select on columns"""
+    distinct_on: [initiative_group_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [initiative_group_order_by!]
+
+    """filter the rows returned"""
+    where: initiative_group_bool_exp
+  ): initiative_group_aggregate!
+
+  """
+  fetch data from the table: "initiative_group" using primary key columns
+  """
+  initiative_group_by_pk(id: Int!): initiative_group
+
+  """
+  fetch data from the table: "note_links"
+  """
+  note_links(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): [note_links!]!
+
+  """
+  fetch aggregated fields from the table: "note_links"
+  """
+  note_links_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_links_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_links_order_by!]
+
+    """filter the rows returned"""
+    where: note_links_bool_exp
+  ): note_links_aggregate!
+
+  """fetch data from the table: "note_links" using primary key columns"""
+  note_links_by_pk(from: Int!, to: Int!): note_links
+
+  """
+  fetch data from the table: "note_tags"
+  """
+  note_tags(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): [note_tags!]!
+
+  """
+  fetch aggregated fields from the table: "note_tags"
+  """
+  note_tags_aggregate(
+    """distinct select on columns"""
+    distinct_on: [note_tags_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [note_tags_order_by!]
+
+    """filter the rows returned"""
+    where: note_tags_bool_exp
+  ): note_tags_aggregate!
+
+  """fetch data from the table: "note_tags" using primary key columns"""
+  note_tags_by_pk(id: Int!): note_tags
+
+  """
+  fetch data from the table: "notes"
+  """
+  notes(
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): [notes!]!
+
+  """
+  fetch aggregated fields from the table: "notes"
+  """
+  notes_aggregate(
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): notes_aggregate!
+
+  """fetch data from the table: "notes" using primary key columns"""
+  notes_by_pk(id: Int!): notes
+
+  """
+  execute function "search_by_tag" which returns "notes"
+  """
+  search_by_tag(
+    """
+    input parameters for function "search_by_tag"
+    """
+    args: search_by_tag_args!
+
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): [notes!]!
+
+  """
+  execute function "search_by_tag" and query aggregates on result of table type "notes"
+  """
+  search_by_tag_aggregate(
+    """
+    input parameters for function "search_by_tag"
+    """
+    args: search_by_tag_args!
+
+    """distinct select on columns"""
+    distinct_on: [notes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [notes_order_by!]
+
+    """filter the rows returned"""
+    where: notes_bool_exp
+  ): notes_aggregate!
+
+  """
+  fetch data from the table: "test"
+  """
+  test(
+    """distinct select on columns"""
+    distinct_on: [test_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [test_order_by!]
+
+    """filter the rows returned"""
+    where: test_bool_exp
+  ): [test!]!
+
+  """
+  fetch aggregated fields from the table: "test"
+  """
+  test_aggregate(
+    """distinct select on columns"""
+    distinct_on: [test_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [test_order_by!]
+
+    """filter the rows returned"""
+    where: test_bool_exp
+  ): test_aggregate!
+
+  """fetch data from the table: "test" using primary key columns"""
+  test_by_pk(id: Int!): test
+}
+
+"""
+columns and relationships of "test"
+"""
+type test {
+  first_name: String!
+  id: Int!
+  last_name: String!
+  last_updated_at: timestamptz!
+  phone_number: String!
+}
+
+"""
+aggregated selection of "test"
+"""
+type test_aggregate {
+  aggregate: test_aggregate_fields
+  nodes: [test!]!
+}
+
+"""
+aggregate fields of "test"
+"""
+type test_aggregate_fields {
+  avg: test_avg_fields
+  count(columns: [test_select_column!], distinct: Boolean): Int!
+  max: test_max_fields
+  min: test_min_fields
+  stddev: test_stddev_fields
+  stddev_pop: test_stddev_pop_fields
+  stddev_samp: test_stddev_samp_fields
+  sum: test_sum_fields
+  var_pop: test_var_pop_fields
+  var_samp: test_var_samp_fields
+  variance: test_variance_fields
+}
+
+"""aggregate avg on columns"""
+type test_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "test". All fields are combined with a logical 'AND'.
+"""
+input test_bool_exp {
+  _and: [test_bool_exp!]
+  _not: test_bool_exp
+  _or: [test_bool_exp!]
+  first_name: String_comparison_exp
+  id: Int_comparison_exp
+  last_name: String_comparison_exp
+  last_updated_at: timestamptz_comparison_exp
+  phone_number: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "test"
+"""
+enum test_constraint {
+  """unique or primary key constraint"""
+  test_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "test"
+"""
+input test_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "test"
+"""
+input test_insert_input {
+  first_name: String
+  id: Int
+  last_name: String
+  last_updated_at: timestamptz
+  phone_number: String
+}
+
+"""aggregate max on columns"""
+type test_max_fields {
+  first_name: String
+  id: Int
+  last_name: String
+  last_updated_at: timestamptz
+  phone_number: String
+}
+
+"""aggregate min on columns"""
+type test_min_fields {
+  first_name: String
+  id: Int
+  last_name: String
+  last_updated_at: timestamptz
+  phone_number: String
+}
+
+"""
+response of any mutation on the table "test"
+"""
+type test_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [test!]!
+}
+
+"""
+on conflict condition type for table "test"
+"""
+input test_on_conflict {
+  constraint: test_constraint!
+  update_columns: [test_update_column!]! = []
+  where: test_bool_exp
+}
+
+"""Ordering options when selecting data from "test"."""
+input test_order_by {
+  first_name: order_by
+  id: order_by
+  last_name: order_by
+  last_updated_at: order_by
+  phone_number: order_by
+}
+
+"""primary key columns input for table: test"""
+input test_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "test"
+"""
+enum test_select_column {
+  """column name"""
+  first_name
+
+  """column name"""
+  id
+
+  """column name"""
+  last_name
+
+  """column name"""
+  last_updated_at
+
+  """column name"""
+  phone_number
+}
+
+"""
+input type for updating data in table "test"
+"""
+input test_set_input {
+  first_name: String
+  id: Int
+  last_name: String
+  last_updated_at: timestamptz
+  phone_number: String
+}
+
+"""aggregate stddev on columns"""
+type test_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type test_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type test_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type test_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "test"
+"""
+enum test_update_column {
+  """column name"""
+  first_name
+
+  """column name"""
+  id
+
+  """column name"""
+  last_name
+
+  """column name"""
+  last_updated_at
+
+  """column name"""
+  phone_number
+}
+
+"""aggregate var_pop on columns"""
+type test_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type test_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type test_variance_fields {
+  id: Float
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
