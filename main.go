@@ -121,6 +121,44 @@ func createLinkAndTagInputsFromNote(note string, id int, existingTags []string, 
 	return tagsInput, linksInput;
 }
 
+func idFromNoteName(name string) int {
+	re := regexp.MustCompile(`(\d+)\.ggn`)
+	match := re.FindAllStringSubmatch(name, 1)
+	if len(match) == 0 {
+		return -1
+	}
+	id, err := strconv.Atoi(match[0][1])
+	if err != nil {
+		return -1
+	}
+	return id
+}
+
+func download(noteRoot string, graphqlClient graphql.Client) {
+	var notes *GetAllNotesResponse
+	notes, err := GetAllNotes(context.Background(), graphqlClient)
+	if err != nil {
+		return
+	}
+
+	for _, note := range notes.Notes {
+		var filePath = noteRoot + fmt.Sprint(note.Id) + ".ggn"
+		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0666)
+		handleErr(err)
+
+		fStat, err := f.Stat()
+		handleErr(err)
+		buf := make([]byte, fStat.Size())
+
+		fmt.Println("Downloading " + filePath)
+		_, err = f.Read(buf)
+		handleErr(err)
+
+		f.WriteString(note.Note)
+		f.Close()
+	}
+}
+
 func main() {
 
 	noteRoot := getNoteRoot()
@@ -128,28 +166,7 @@ func main() {
 
 	switch os.Args[1] {
 	case "download":
-		var notes *GetAllNotesResponse
-		notes, err := GetAllNotes(context.Background(), graphqlClient)
-		if err != nil {
-			return
-		}
-
-		for _, note := range notes.Notes {
-			var filePath = noteRoot + fmt.Sprint(note.Id) + ".ggn"
-			f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0666)
-			handleErr(err)
-
-			fStat, err := f.Stat()
-			handleErr(err)
-			buf := make([]byte, fStat.Size())
-
-			fmt.Println("Downloading " + filePath)
-			_, err = f.Read(buf)
-			handleErr(err)
-
-			f.WriteString(note.Note)
-			f.Close()
-		}
+		download(noteRoot, graphqlClient)
 	case "save":
 		id, err := strconv.Atoi(os.Args[2])
 		if id == 0 || err != nil {
@@ -228,6 +245,16 @@ func main() {
 			}
 			fmt.Println("Success! Updated Note " + fmt.Sprint(id))
 		}
+	case "new":
+		download(noteRoot, graphqlClient)
+		f, err := os.Open(noteRoot)
+		handleErr(err)
+		names, err := f.Readdirnames(-1)
+		handleErr(err)
+		sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
+		nextId := idFromNoteName(names[len(names) - 1]) + 1
+		os.Create(noteRoot + fmt.Sprint(nextId) + ".ggn")
+		fmt.Println("Created Note " + fmt.Sprint(nextId))
 	default:
 		err := fmt.Errorf("Options are download and save <id>")
 		handleErr(err)
