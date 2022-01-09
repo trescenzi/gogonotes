@@ -315,6 +315,7 @@ type Notes_insert_input struct {
 	NoteLinksByTo *Note_links_arr_rel_insert_input `json:"noteLinksByTo,omitempty"`
 	Note_links    *Note_links_arr_rel_insert_input `json:"note_links,omitempty"`
 	Note_tags     *Note_tags_arr_rel_insert_input  `json:"note_tags,omitempty"`
+	Updated_at    time.Time                        `json:"updated_at"`
 }
 
 // GetCreated_at returns Notes_insert_input.Created_at, and is useful for accessing the field via an interface.
@@ -339,6 +340,9 @@ func (v *Notes_insert_input) GetNote_links() *Note_links_arr_rel_insert_input { 
 
 // GetNote_tags returns Notes_insert_input.Note_tags, and is useful for accessing the field via an interface.
 func (v *Notes_insert_input) GetNote_tags() *Note_tags_arr_rel_insert_input { return v.Note_tags }
+
+// GetUpdated_at returns Notes_insert_input.Updated_at, and is useful for accessing the field via an interface.
+func (v *Notes_insert_input) GetUpdated_at() time.Time { return v.Updated_at }
 
 type Search_by_tag_args struct {
 	Search_tag string `json:"search_tag"`
@@ -491,8 +495,9 @@ func (v *__searchNotesByTagInput) GetArgs() *Search_by_tag_args { return v.Args 
 
 // __updateNoteInput is used internally by genqlient
 type __updateNoteInput struct {
-	Id   int    `json:"id"`
-	Note string `json:"note"`
+	Id         int       `json:"id"`
+	Note       string    `json:"note"`
+	Updated_at time.Time `json:"updated_at"`
 }
 
 // GetId returns __updateNoteInput.Id, and is useful for accessing the field via an interface.
@@ -500,6 +505,9 @@ func (v *__updateNoteInput) GetId() int { return v.Id }
 
 // GetNote returns __updateNoteInput.Note, and is useful for accessing the field via an interface.
 func (v *__updateNoteInput) GetNote() string { return v.Note }
+
+// GetUpdated_at returns __updateNoteInput.Updated_at, and is useful for accessing the field via an interface.
+func (v *__updateNoteInput) GetUpdated_at() time.Time { return v.Updated_at }
 
 // addNoteInsert_notes_oneNotes includes the requested fields of the GraphQL type notes.
 // The GraphQL type's documentation follows.
@@ -1123,10 +1131,12 @@ func updateNote(
 	client graphql.Client,
 	id int,
 	note string,
+	updated_at time.Time,
 ) (*updateNoteResponse, error) {
 	__input := __updateNoteInput{
-		Id:   id,
-		Note: note,
+		Id:         id,
+		Note:       note,
+		Updated_at: updated_at,
 	}
 	var err error
 
@@ -1135,8 +1145,8 @@ func updateNote(
 		ctx,
 		"updateNote",
 		`
-mutation updateNote ($id: Int!, $note: String!) {
-	update_notes(where: {id:{_eq:$id}}, _set: {note:$note}) {
+mutation updateNote ($id: Int!, $note: String!, $updated_at: timestamptz) {
+	update_notes(where: {id:{_eq:$id}}, _set: {note:$note,updated_at:$updated_at}) {
 		returning {
 			note
 			id

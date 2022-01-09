@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"context"
 	"regexp"
+	"time"
 )
 
 func save(id int) {
@@ -19,7 +20,7 @@ func save(id int) {
 		saveNewNote(file, id)
 	} else {
 		//update existing note
-		_, err := updateNote(context.Background(), graphqlClient, id, string(file))
+		_, err := updateNote(context.Background(), graphqlClient, id, string(file), time.Now())
 		handleErr(err)
 
 		rawExistingTags := notes.Notes[0].Note_tags;
@@ -42,10 +43,13 @@ func saveNewNote(file []byte, id int) {
 	//add a new note
 	creator, err := os.Hostname()
 	handleErr(err)
+	now := time.Now()
 	newNote := &Notes_insert_input{
 		Note:    string(file),
 		Creator: creator,
 		Id:      id,
+		Created_at: now,
+		Updated_at: now,
 	}
 	savedNote, err := addNote(context.Background(), graphqlClient, newNote)
 	handleErr(err)

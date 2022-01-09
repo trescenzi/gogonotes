@@ -43,8 +43,8 @@ query searchNotesByTag($args: search_by_tag_args!) {
   }
 }
 
-mutation updateNote($id:Int!, $note:String!) {
-  update_notes(where: {id: {_eq: $id}}, _set: {note: $note}) {
+mutation updateNote($id:Int!, $note:String!, $updated_at:timestamptz) {
+  update_notes(where: {id: {_eq: $id}}, _set: {note: $note, updated_at: $updated_at}) {
 		returning {
       note
       id

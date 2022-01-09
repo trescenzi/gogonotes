@@ -531,7 +531,7 @@ type mutation_root {
   """
   delete single row from the table: "note_tags"
   """
-  delete_note_tags_by_pk(id: Int!): note_tags
+  delete_note_tags_by_pk(note_id: Int!, tag: String!): note_tags
 
   """
   delete data from the table: "notes"
@@ -1326,7 +1326,8 @@ input note_tags_order_by {
 
 """primary key columns input for table: note_tags"""
 input note_tags_pk_columns_input {
-  id: Int!
+  note_id: Int!
+  tag: String!
 }
 
 """
@@ -1592,6 +1593,7 @@ type notes {
     """filter the rows returned"""
     where: note_tags_bool_exp
   ): note_tags_aggregate!
+  updated_at: timestamptz
 }
 
 """
@@ -1638,6 +1640,7 @@ input notes_bool_exp {
   noteLinksByTo: note_links_bool_exp
   note_links: note_links_bool_exp
   note_tags: note_tags_bool_exp
+  updated_at: timestamptz_comparison_exp
 }
 
 """
@@ -1666,6 +1669,7 @@ input notes_insert_input {
   noteLinksByTo: note_links_arr_rel_insert_input
   note_links: note_links_arr_rel_insert_input
   note_tags: note_tags_arr_rel_insert_input
+  updated_at: timestamptz
 }
 
 """aggregate max on columns"""
@@ -1674,6 +1678,7 @@ type notes_max_fields {
   creator: String
   id: Int
   note: String
+  updated_at: timestamptz
 }
 
 """aggregate min on columns"""
@@ -1682,6 +1687,7 @@ type notes_min_fields {
   creator: String
   id: Int
   note: String
+  updated_at: timestamptz
 }
 
 """
@@ -1713,6 +1719,7 @@ input notes_order_by {
   noteLinksByTo_aggregate: note_links_aggregate_order_by
   note_links_aggregate: note_links_aggregate_order_by
   note_tags_aggregate: note_tags_aggregate_order_by
+  updated_at: order_by
 }
 
 """primary key columns input for table: notes"""
@@ -1735,6 +1742,9 @@ enum notes_select_column {
 
   """column name"""
   note
+
+  """column name"""
+  updated_at
 }
 
 """
@@ -1745,6 +1755,7 @@ input notes_set_input {
   creator: String
   id: Int
   note: String
+  updated_at: timestamptz
 }
 
 """aggregate stddev on columns"""
@@ -1782,6 +1793,9 @@ enum notes_update_column {
 
   """column name"""
   note
+
+  """column name"""
+  updated_at
 }
 
 """aggregate var_pop on columns"""
@@ -1993,7 +2007,7 @@ type query_root {
   ): note_tags_aggregate!
 
   """fetch data from the table: "note_tags" using primary key columns"""
-  note_tags_by_pk(id: Int!): note_tags
+  note_tags_by_pk(note_id: Int!, tag: String!): note_tags
 
   """
   fetch data from the table: "notes"
@@ -2309,7 +2323,7 @@ type subscription_root {
   ): note_tags_aggregate!
 
   """fetch data from the table: "note_tags" using primary key columns"""
-  note_tags_by_pk(id: Int!): note_tags
+  note_tags_by_pk(note_id: Int!, tag: String!): note_tags
 
   """
   fetch data from the table: "notes"
@@ -2683,3 +2697,4 @@ input timestamptz_comparison_exp {
   _neq: timestamptz
   _nin: [timestamptz!]
 }
+
