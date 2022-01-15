@@ -16,7 +16,7 @@ func download(noteRoot string, graphqlClient graphql.Client) {
 
 	for _, note := range notes.Notes {
 		var filePath = noteRoot + fmt.Sprint(note.Id) + ".ggn"
-		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0666)
+		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 		handleErr(err)
 
 		fStat, err := f.Stat()
