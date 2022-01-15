@@ -1,57 +1,20 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"net/http"
 	"os"
 	//"text/template/parse"
 	"regexp"
-	"strconv"
 	"sort"
+	"strconv"
 
 	//"encoding/json"
-
-	"github.com/Khan/genqlient/graphql"
 )
-
-type authedTransport struct {
-	key     string
-	wrapped http.RoundTripper
-}
-
-func (t *authedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("x-hasura-admin-secret", t.key)
-	return t.wrapped.RoundTrip(req)
-}
 
 func handleErr(err error) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func createGQLClient() graphql.Client {
-	key := os.Getenv("HASURA_ADMIN_SECRET")
-	if key == "" {
-		err := fmt.Errorf("must set HASURA_ADMIN_SECRET")
-		handleErr(err)
-	}
-
-	endpoint := os.Getenv("HASURA_ENDPOINT")
-
-	if endpoint == "" {
-		err := fmt.Errorf("must set HASURA_ENDPOINT")
-		handleErr(err)
-	}
-
-	httpClient := http.Client{
-		Transport: &authedTransport{
-			key:     key,
-			wrapped: http.DefaultTransport,
-		},
-	}
-	return graphql.NewClient(endpoint, &httpClient)
 }
 
 func getNoteRoot() string {
@@ -68,10 +31,9 @@ func getNoteRoot() string {
 }
 
 func contains(s []string, searchterm string) bool {
-    i := sort.SearchStrings(s, searchterm)
-    return i < len(s) && s[i] == searchterm
+	i := sort.SearchStrings(s, searchterm)
+	return i < len(s) && s[i] == searchterm
 }
-
 
 func idFromNoteName(name string) int {
 	re := regexp.MustCompile(`(\d+)\.ggn`)
@@ -86,32 +48,6 @@ func idFromNoteName(name string) int {
 	return id
 }
 
-func download(noteRoot string, graphqlClient graphql.Client) {
-	var notes *GetAllNotesResponse
-	notes, err := GetAllNotes(context.Background(), graphqlClient)
-	if err != nil {
-		return
-	}
-
-	for _, note := range notes.Notes {
-		var filePath = noteRoot + fmt.Sprint(note.Id) + ".ggn"
-		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0666)
-		handleErr(err)
-
-		fStat, err := f.Stat()
-		handleErr(err)
-		buf := make([]byte, fStat.Size())
-
-		fmt.Println("Downloading " + filePath)
-		_, err = f.Read(buf)
-		handleErr(err)
-
-		f.WriteString(note.Note)
-		f.Close()
-	}
-}
-
-var graphqlClient = createGQLClient()
 var noteRoot = getNoteRoot()
 
 func main() {
@@ -133,7 +69,7 @@ func main() {
 		names, err := f.Readdirnames(-1)
 		handleErr(err)
 		sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
-		nextId := idFromNoteName(names[len(names) - 1]) + 1
+		nextId := idFromNoteName(names[len(names)-1]) + 1
 		os.Create(noteRoot + fmt.Sprint(nextId) + ".ggn")
 		fmt.Println("Created Note " + fmt.Sprint(nextId))
 	default:
@@ -141,5 +77,4 @@ func main() {
 		handleErr(err)
 	}
 }
-
 //go:generate go run github.com/Khan/genqlient genqlient.yaml

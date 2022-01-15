@@ -1,11 +1,13 @@
 package main
+
 import (
-	"os"
-	"strconv"
-	"fmt"
 	"context"
+	"fmt"
+	"os"
 	"regexp"
+	"strconv"
 	"time"
+	"sort"
 )
 
 func save(id int) {
@@ -23,12 +25,12 @@ func save(id int) {
 		_, err := updateNote(context.Background(), graphqlClient, id, string(file), time.Now())
 		handleErr(err)
 
-		rawExistingTags := notes.Notes[0].Note_tags;
+		rawExistingTags := notes.Notes[0].Note_tags
 		var existingTags []string
 		for _, tag := range rawExistingTags {
 			existingTags = append(existingTags, tag.Tag)
 		}
-		rawExistingLinks := notes.Notes[0].Note_links;
+		rawExistingLinks := notes.Notes[0].Note_links
 		var existingLinks []string
 		for _, link := range rawExistingLinks {
 			existingLinks = append(existingLinks, fmt.Sprint(link.To))
@@ -45,9 +47,9 @@ func saveNewNote(file []byte, id int) {
 	handleErr(err)
 	now := time.Now()
 	newNote := &Notes_insert_input{
-		Note:    string(file),
-		Creator: creator,
-		Id:      id,
+		Note:       string(file),
+		Creator:    creator,
+		Id:         id,
 		Created_at: now,
 		Updated_at: now,
 	}
@@ -65,10 +67,11 @@ func getTags(note string, existingTags []string) []string {
 	re := regexp.MustCompile("#([A-Za-z0-9-_]+)")
 	submatches := re.FindAllStringSubmatch(note, -1)
 	var tags []string
+	sort.Strings(existingTags)
 	for _, sub := range submatches {
-		if (sub[1] != "" && !contains(existingTags, sub[1])) {
-      tags = append(tags, sub[1])
-    }
+		if sub[1] != "" && !contains(existingTags, sub[1]) {
+			tags = append(tags, sub[1])
+		}
 	}
 	return tags
 }
@@ -77,6 +80,7 @@ func getLinks(note string, existingLinks []string) []int {
 	re := regexp.MustCompile(`\[\[(\d+)\]\]`)
 	links := re.FindAllStringSubmatch(note, -1)
 	var linkIds []int
+	sort.Strings(existingLinks)
 	for _, link := range links {
 		if link[1] != "" && !contains(existingLinks, link[1]) {
 			linkInt, err := strconv.Atoi(link[1])
@@ -107,11 +111,11 @@ func createLinkAndTagInputsFromNote(note string, id int, existingTags []string, 
 		})
 	}
 
-	return tagsInput, linksInput;
+	return tagsInput, linksInput
 }
 
 func potentiallyAddTagsAndLinks(tagsInput []*Note_tags_insert_input, linksInput []*Note_links_insert_input) {
-	if len(tagsInput) == 0  && len(linksInput) == 0 {
+	if len(tagsInput) == 0 && len(linksInput) == 0 {
 		return
 	} else if len(tagsInput) == 0 && len(linksInput) != 0 {
 		for _, link := range linksInput {
