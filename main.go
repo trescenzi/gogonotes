@@ -36,12 +36,12 @@ func contains(s []string, searchterm string) bool {
 }
 
 func idFromNoteName(name string) int {
-	re := regexp.MustCompile(`(\d+)\.ggn`)
+	re := regexp.MustCompile(`((\w*)-)?(\d*)(\.ggn)?`)
 	match := re.FindAllStringSubmatch(name, 1)
 	if len(match) == 0 {
 		return -1
 	}
-	id, err := strconv.Atoi(match[0][1])
+	id, err := strconv.Atoi(match[0][3])
 	if err != nil {
 		return -1
 	}
@@ -51,18 +51,21 @@ func idFromNoteName(name string) int {
 var noteRoot = getNoteRoot()
 
 func main() {
-
 	switch os.Args[1] {
 	case "download":
 		download(noteRoot, graphqlClient)
 	case "save":
-		id, err := strconv.Atoi(os.Args[2])
-		if id == 0 || err != nil {
+		id := idFromNoteName(os.Args[2])
+		if id == -1 {
 			err := fmt.Errorf("Please provide a note ID for saving")
 			handleErr(err)
 		}
-		save(id)
+		save(os.Args[2], id)
 	case "new":
+		notePrefix := ""
+		if len(os.Args) == 3 {
+			notePrefix = os.Args[2] + "-"
+		}
 		download(noteRoot, graphqlClient)
 		f, err := os.Open(noteRoot)
 		handleErr(err)
@@ -70,8 +73,8 @@ func main() {
 		handleErr(err)
 		sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
 		nextId := idFromNoteName(names[len(names)-1]) + 1
-		os.Create(noteRoot + fmt.Sprint(nextId) + ".ggn")
-		fmt.Println("Created Note " + fmt.Sprint(nextId))
+		os.Create(noteRoot + notePrefix + fmt.Sprint(nextId) + ".ggn")
+		fmt.Println("Created Note " + notePrefix + fmt.Sprint(nextId))
 	default:
 		err := fmt.Errorf("Options are download and save <id>")
 		handleErr(err)

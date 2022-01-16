@@ -10,8 +10,8 @@ import (
 	"sort"
 )
 
-func save(id int) {
-	filepath := noteRoot + fmt.Sprint(id) + ".ggn"
+func save(noteName string, id int) {
+	filepath := noteRoot + noteName + ".ggn"
 	fmt.Println("Saving " + filepath)
 	file, err := os.ReadFile(filepath)
 	handleErr(err)
@@ -57,10 +57,9 @@ func saveNewNote(file []byte, id int) {
 	handleErr(err)
 	fmt.Println(savedNote.Insert_notes_one.Id)
 	tagsInput, linksInput := createLinkAndTagInputsFromNote(newNote.Note, id, make([]string, 0), make([]string, 0))
-	_, err = addNoteTagsAndLinks(context.Background(), graphqlClient, tagsInput, linksInput)
+	potentiallyAddTagsAndLinks(tagsInput, linksInput)
 	handleErr(err)
 	fmt.Println("Success! Saved new note " + fmt.Sprint(id))
-	potentiallyAddTagsAndLinks(tagsInput, linksInput)
 }
 
 func getTags(note string, existingTags []string) []string {
