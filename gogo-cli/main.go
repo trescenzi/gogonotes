@@ -74,7 +74,7 @@ func main() {
 		sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
 		nextId := idFromNoteName(names[len(names)-1]) + 1
 		os.Create(noteRoot + notePrefix + fmt.Sprint(nextId) + ".ggn")
-		fmt.Println("Created Note " + notePrefix + fmt.Sprint(nextId))
+		fmt.Println(notePrefix + fmt.Sprint(nextId))
 	default:
 		err := fmt.Errorf("Options are download and save <id>")
 		handleErr(err)
