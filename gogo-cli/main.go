@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"strings"
 
 	//"encoding/json"
 )
@@ -56,12 +57,14 @@ func main() {
 	case "download":
 		download(noteRoot, graphqlClient)
 	case "save":
-		id := idFromNoteName(os.Args[2])
+		name := strings.ReplaceAll(os.Args[2], noteRoot, "")
+		name = strings.ReplaceAll(name, ".ggn", "")
+		id := idFromNoteName(name)
 		if id == -1 {
 			err := fmt.Errorf("Please provide a note ID for saving")
 			handleErr(err)
 		}
-		save(os.Args[2], id)
+		save(name, id)
 	case "new":
 		notePrefix := ""
 		if len(os.Args) == 3 {
