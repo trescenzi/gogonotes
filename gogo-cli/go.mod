@@ -1,4 +1,4 @@
-module github.com/trescenzi/gogonotes
+module github.com/trescenzi/gogonotes/gogo-cli
 
 go 1.17
 
