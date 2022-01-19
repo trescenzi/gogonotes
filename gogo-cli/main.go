@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	//"text/template/parse"
 	"regexp"
 	"sort"
@@ -73,8 +74,17 @@ func main() {
 		handleErr(err)
 		sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
 		nextId := idFromNoteName(names[len(names)-1]) + 1
-		os.Create(noteRoot + notePrefix + fmt.Sprint(nextId) + ".ggn")
-		fmt.Println(notePrefix + fmt.Sprint(nextId))
+		notePath := noteRoot + notePrefix + fmt.Sprint(nextId) + ".ggn"
+		os.Create(notePath)
+		editorPath, err := exec.LookPath("nvim")
+		handleErr(err)
+		cmd := exec.Command(editorPath, notePath)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		handleErr(err)
+		save(notePrefix + fmt.Sprint(nextId), nextId)
 	default:
 		err := fmt.Errorf("Options are download and save <id>")
 		handleErr(err)

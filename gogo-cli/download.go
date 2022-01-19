@@ -29,7 +29,6 @@ func download(noteRoot string, graphqlClient graphql.Client) {
 	handleErr(err)
 	sort.Slice(names, func(i, j int) bool { return idFromNoteName(names[i]) < idFromNoteName(names[j]) })
 
-	fmt.Println("Downloading ...")
 	for _, note := range notes.Notes {
 		filePath, alreadyExists := notePathIfExists(names, note.Id)
 		if !alreadyExists {
@@ -42,7 +41,6 @@ func download(noteRoot string, graphqlClient graphql.Client) {
 		handleErr(err)
 		buf := make([]byte, fStat.Size())
 
-		fmt.Print(noteRoot + filePath)
 		_, err = f.Read(buf)
 		handleErr(err)
 
